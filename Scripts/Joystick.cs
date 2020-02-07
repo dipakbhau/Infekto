@@ -8,21 +8,21 @@ public class Joystick : TouchScreenButton
 		GD.Print(o.ToString());
 	}
 
-
+	private float valueLimit = 10f;
 	private Sprite outer;
 	private TouchScreenButton inner;
 
 	private Vector2 offset = new Vector2(100,100);
-	private float radius = 100;
+	[Export]
+	public float radius = 100;
 
-
+	[Export]
+	public float sensitivity = 35f;
 
 	public override void _Ready()
 	{
 		outer = GetParent<Sprite>();
 		inner = this;
-		Print(outer.Name);
-		Print(inner.Name);
 	}
 
 	public override void _Process(float d)
@@ -30,22 +30,21 @@ public class Joystick : TouchScreenButton
 		if (!inner.IsPressed())
 		{
 			Vector2 dif = (new Vector2(0,0) - offset) - Position;
-			Position += dif * 25 * d;
+			Position += dif * sensitivity * d;
 		}
+		Print(get());
 	}
 
 	public override void _Input(InputEvent e)
 	{
-		if(e is InputEventScreenTouch touch && inner.IsPressed())
+		if(e is InputEventScreenTouch touch)
 		{
-			setJoyPosition(touch.Position);
-			Print(touch.Position);
+			setJoyPosition(touch.Position,touch.Index);
 		}
 
-		if(e is InputEventScreenDrag drag && inner.IsPressed())
+		if(e is InputEventScreenDrag drag)
 		{
-			setJoyPosition(drag.Position);
-			Print(drag.Position);
+			setJoyPosition(drag.Position,drag.Index);
 		}
 	}
 
@@ -54,14 +53,25 @@ public class Joystick : TouchScreenButton
 		return Position + offset;
 	}
 
-	private void setJoyPosition(Vector2 pos)
+	private void setJoyPosition(Vector2 pos,int index)
 	{
-		GlobalPosition = pos - offset * GlobalScale;
-
-		if(getJoyPosition().Length() > radius)
+		if(index == 0 && inner.IsPressed())
+		{
+			GlobalPosition = pos - offset * GlobalScale;
+		}
+		if (getJoyPosition().Length() > radius)
 		{
 			Position = getJoyPosition().Normalized() * radius - offset;
 		}
+	}
+
+	public Vector2 get()
+	{
+		if (getJoyPosition().Length() > valueLimit)
+		{
+			return getJoyPosition().Normalized();
+		}
+		return Vector2.Zero;
 	}
 }
 

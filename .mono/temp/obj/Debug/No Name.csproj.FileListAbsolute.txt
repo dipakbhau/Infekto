@@ -1,0 +1,6 @@
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\bin\Debug\No Name.dll
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\bin\Debug\No Name.pdb
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\obj\Debug\No Name.csprojAssemblyReference.cache
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\obj\Debug\No Name.csproj.CoreCompileInputs.cache
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\obj\Debug\No Name.dll
+D:\dev\Git\source\Game Projects\No Name\.mono\temp\obj\Debug\No Name.pdb
