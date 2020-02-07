@@ -16,7 +16,21 @@ _global_script_class_icons={
 [application]
 
 config/name="No Name"
+run/main_scene="res://Scenes/Joystick.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
+window/size/test_width=960
+window/size/test_height=540
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_height"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
