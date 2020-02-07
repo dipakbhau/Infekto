@@ -9,67 +9,59 @@ public class Joystick : TouchScreenButton
 	}
 
 	private float valueLimit = 10f;
-	private Sprite outer;
-	private TouchScreenButton inner;
 
-	private Vector2 offset = new Vector2(100,100);
+	private Vector2 offset = new Vector2(100, 100);
 	[Export]
 	public float radius = 100;
 
 	[Export]
 	public float sensitivity = 35f;
 
-	public override void _Ready()
-	{
-		outer = GetParent<Sprite>();
-		inner = this;
-	}
+	private int touchCount = -1;
 
 	public override void _Process(float d)
 	{
-		if (!inner.IsPressed())
+		if (touchCount == -1)
 		{
-			Vector2 dif = (new Vector2(0,0) - offset) - Position;
+			Vector2 dif = (new Vector2(0, 0) - offset) - Position;
 			Position += dif * sensitivity * d;
 		}
-		Print(get());
 	}
 
 	public override void _Input(InputEvent e)
 	{
-		if(e is InputEventScreenTouch touch)
+		if (e is InputEventScreenTouch touch && IsPressed())
 		{
-			setJoyPosition(touch.Position,touch.Index);
+			touchCount = touch.Index;
+			GlobalPosition = touch.Position - offset * GlobalScale;
 		}
 
-		if(e is InputEventScreenDrag drag)
+		else if (e is InputEventScreenDrag drag && IsPressed())
 		{
-			setJoyPosition(drag.Position,drag.Index);
+			touchCount = drag.Index;
+			GlobalPosition = drag.Position - offset * GlobalScale;
 		}
-	}
 
-	private Vector2 getJoyPosition()
-	{
-		return Position + offset;
-	}
-
-	private void setJoyPosition(Vector2 pos,int index)
-	{
-		if(index == 0 && inner.IsPressed())
-		{
-			GlobalPosition = pos - offset * GlobalScale;
-		}
 		if (getJoyPosition().Length() > radius)
 		{
 			Position = getJoyPosition().Normalized() * radius - offset;
 		}
-	}
 
+		if (!IsPressed() && touchCount == 0)
+		{
+			touchCount = -1;
+		}
+	}
+	private Vector2 getJoyPosition()
+	{
+		return Position + offset;
+	}
 	public Vector2 get()
 	{
+		Vector2 pos = getJoyPosition().Normalized();
 		if (getJoyPosition().Length() > valueLimit)
 		{
-			return getJoyPosition().Normalized();
+			return pos;          
 		}
 		return Vector2.Zero;
 	}
