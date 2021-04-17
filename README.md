@@ -1,2 +1,1 @@
-# No-Name
-add name for game
+Infekto is Android mobile zombie shooter game project.
